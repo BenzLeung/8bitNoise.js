@@ -53,7 +53,7 @@
      * 使用特定的频率值创建 Node。
      * @param {Number} frequency 如果 frequency <= 16 ，那么使用固定的16种频率，否则就是自定义频率。
      *                           若要完美模仿红白机效果，则只需使用固定的16种频率就好了。
-     * @returns {*}
+     * @returns {AudioNode}
      */
     AudioContext.prototype.create8bitNoise = function(frequency) {
         if (frequency <= 16) {

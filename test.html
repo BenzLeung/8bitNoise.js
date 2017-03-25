@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>8-bit Noise Test</title>
+</head>
+<body>
+<h1>8位噪波测试</h1>
+<div id="root"></div>
+<script src="8bitNoise.js"></script>
+<script>
+    (function () {
+        var AudioContext = window.AudioContext || window.webkitAudioContext || window.mozAudioContext;
+        var ctx = new AudioContext();
+        var node;
+        function start(freq) {
+            if (node) {
+                stop();
+            }
+            node = ctx.create8bitNoise(freq);
+            node.connect(ctx.destination);
+            node.start(0);
+        }
+        function stop() {
+            if (node) {
+                node.stop(0);
+            }
+        }
+        var btn;
+        var root = document.getElementById('root');
+        for (var i = 1; i <= 16; i ++) {
+            btn = document.createElement('button');
+            btn.innerHTML = '噪波' + i;
+            btn.onmousedown = (function (f) {
+                return function () {
+                    start(f);
+                }
+            })(i);
+            root.appendChild(btn);
+        }
+        document.onmouseup = function () {
+            stop();
+        };
+    })();
+</script>
+</body>
+</html>

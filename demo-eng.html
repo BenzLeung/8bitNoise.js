@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0"/>
+    <meta name="format-detection" content="telephone=no"/>
+    <title>8-bit noise demo</title>
+</head>
+<body>
+<h1>8-bit noise demo</h1>
+<button id="boom">Big Boom - Contra</button>
+<button id="bullet">Bullet - Contra</button>
+<script src="8bitNoise.js"></script>
+<script>
+    var ctx = new (window.AudioContext || window.webkitAudioContext || window.mozAudioContext)();
+    var compressor = ctx.createDynamicsCompressor();
+    compressor.connect(ctx.destination);
+
+    (function () {
+        // [frequency, duration]
+        var boomNoise = [
+            [10, 0.16],
+            [14, 0.03],
+            [7, 0.03],
+            [12, 0.16],
+            [13, 0.80],
+            [10, 0.16],
+            [12, 0.10],
+            [13, 0.80],
+            [10, 0.16],
+            [13, 0.80]
+        ];
+
+        var generate = function () {
+            var volumeNode = ctx.createGain();
+            volumeNode.gain.setValueAtTime(1.0, ctx.currentTime);
+            volumeNode.gain.setValueAtTime(1.0, ctx.currentTime + 1.0);
+            volumeNode.gain.linearRampToValueAtTime(0.0, ctx.currentTime + 3.4);
+            volumeNode.connect(compressor);
+            var i = 0;
+            var createOneNoise = function () {
+                if (i >= boomNoise.length) {return;}
+                var noiseNode = ctx.create8bitNoise(boomNoise[i][0]);
+                noiseNode.connect(volumeNode);
+                noiseNode.start(0);
+                noiseNode.stop(ctx.currentTime + boomNoise[i][1]);
+                noiseNode.onended = createOneNoise;
+                i ++;
+            };
+            createOneNoise();
+        };
+
+        document.getElementById('boom').onclick = function () {
+            generate();
+        };
+    })();
+
+    (function () {
+        // [frequency, duration, volume]
+        var bulletNoise = [
+            [14, 0.016, 1],
+            [10, 0.017, 1],
+            [10, 0.017, 1],
+            [14, 0.033, 0.2],
+            [0, 0.017],
+            [14, 0.016, 1],
+            [10, 0.017, 1],
+            [10, 0.017, 1],
+            [14, 0.033, 0.2],
+            [0, 0.017],
+            [13, 0.05, 0.3],
+            [10, 0.10, 0.15],
+            [13, 0.05, 0.15],
+            [0, 0.05],
+            [13, 0.05, 0.15],
+            [12, 0.05, 0.05],
+            [13, 0.05, 0.05]
+        ];
+
+
+        var generate = function () {
+            var i = 0;
+            var createOneNoise = function () {
+                if (i >= bulletNoise.length) {return;}
+                if (bulletNoise[i][0] === 0) {
+                    setTimeout(createOneNoise, bulletNoise[i][1] * 1000);
+                    i ++;
+                    return;
+                }
+
+                var volumeNode = ctx.createGain();
+                volumeNode.connect(compressor);
+                volumeNode.gain.value = bulletNoise[i][2];
+
+                var noiseNode = ctx.create8bitNoise(bulletNoise[i][0]);
+                noiseNode.connect(volumeNode);
+                noiseNode.start(0);
+                noiseNode.stop(ctx.currentTime + bulletNoise[i][1]);
+                noiseNode.onended = createOneNoise;
+
+                i ++;
+            };
+            createOneNoise();
+        };
+
+        document.getElementById('bullet').onclick = function () {
+            generate();
+        };
+    })();
+</script>
+</body>
+</html>

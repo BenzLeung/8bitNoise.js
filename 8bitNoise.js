@@ -2,6 +2,8 @@
  * @file 8位噪波生成器，模仿红白机或 Game Boy 的噪波声道
  * @author BenzLeung(https://github.com/BenzLeung)
  * @date 2017/3/25
+ * @license MIT
+ * @version 0.0.1
  * Created by JetBrains PhpStorm.
  *
  * 每位工程师都有保持代码优雅的义务

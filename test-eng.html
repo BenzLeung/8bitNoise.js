@@ -7,7 +7,7 @@
     <title>8-bit Noise Test</title>
 </head>
 <body>
-<h1>8位噪波测试</h1>
+<h1>8-bit Noise Test</h1>
 <div id="root"></div>
 <script src="8bitNoise.js"></script>
 <script>
@@ -32,7 +32,7 @@
         var root = document.getElementById('root');
         for (var i = 1; i <= 16; i ++) {
             btn = document.createElement('button');
-            btn.innerHTML = '噪波' + i;
+            btn.innerHTML = 'Noise No.' + i;
             btn.ontouchstart = btn.onmousedown = (function (f) {
                 return function () {
                     start(f);

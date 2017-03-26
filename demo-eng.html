@@ -33,9 +33,9 @@
 
         var generate = function () {
             var volumeNode = ctx.createGain();
-            volumeNode.gain.setValueAtTime(1.0, ctx.currentTime);
-            volumeNode.gain.setValueAtTime(1.0, ctx.currentTime + 1.0);
-            volumeNode.gain.linearRampToValueAtTime(0.0, ctx.currentTime + 3.4);
+            volumeNode.gain.value = 1.0;
+            volumeNode.gain.linearRampToValueAtTime(1.0, ctx.currentTime);
+            volumeNode.gain.linearRampToValueAtTime(0.0, ctx.currentTime + 3.2);
             volumeNode.connect(compressor);
             var i = 0;
             var createOneNoise = function () {

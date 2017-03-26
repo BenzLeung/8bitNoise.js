@@ -37,11 +37,19 @@
             volumeNode.gain.linearRampToValueAtTime(1.0, ctx.currentTime);
             volumeNode.gain.linearRampToValueAtTime(0.0, ctx.currentTime + 3.2);
             volumeNode.connect(compressor);
+            var innerCompressor = ctx.createDynamicsCompressor();
+            innerCompressor.connect(volumeNode);
             var i = 0;
             var createOneNoise = function () {
-                if (i >= boomNoise.length) {return;}
+                if (i >= boomNoise.length) {
+                    innerCompressor.disconnect(volumeNode);
+                    volumeNode.disconnect(compressor);
+                    innerCompressor = null;
+                    volumeNode = null;
+                    return;
+                }
                 var noiseNode = ctx.create8bitNoise(boomNoise[i][0]);
-                noiseNode.connect(volumeNode);
+                noiseNode.connect(innerCompressor);
                 noiseNode.start(0);
                 noiseNode.stop(ctx.currentTime + boomNoise[i][1]);
                 noiseNode.onended = createOneNoise;

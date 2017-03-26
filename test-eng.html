@@ -36,12 +36,14 @@
             btn.ontouchstart = btn.onmousedown = (function (f) {
                 return function () {
                     start(f);
+                    e.preventDefault();
                 }
             })(i);
             root.appendChild(btn);
         }
         document.ontouchend = document.onmouseup = function () {
             stop();
+            e.preventDefault();
         };
     })();
 </script>

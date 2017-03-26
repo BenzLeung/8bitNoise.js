@@ -34,14 +34,16 @@
             btn = document.createElement('button');
             btn.innerHTML = '噪波' + i;
             btn.ontouchstart = btn.onmousedown = (function (f) {
-                return function () {
+                return function (e) {
                     start(f);
+                    e.preventDefault();
                 }
             })(i);
             root.appendChild(btn);
         }
         document.ontouchend = document.onmouseup = function () {
             stop();
+            e.preventDefault();
         };
     })();
 </script>

@@ -33,17 +33,15 @@
         for (var i = 1; i <= 16; i ++) {
             btn = document.createElement('button');
             btn.innerHTML = 'Noise No.' + i;
-            btn.ontouchstart = btn.onmousedown = (function (f) {
+            btn.onmousedown = (function (f) {
                 return function () {
                     start(f);
-                    e.preventDefault();
                 }
             })(i);
             root.appendChild(btn);
         }
-        document.ontouchend = document.onmouseup = function () {
+        document.onmouseup = function () {
             stop();
-            e.preventDefault();
         };
     })();
 </script>
